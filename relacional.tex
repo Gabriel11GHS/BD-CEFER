@@ -1,0 +1,211 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Mapeamento ME-RX para Modelo Relacional}
+\author{Breno Rodrigues - 11734142 \and Erick Barcelos - 11345562 \and Gabriel Henrique dos Santos - 13783972 \and Lourenço Roselino - 11796805 \and Nelson Luiz - 9793502}
+\date{Setembro 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Mudanças da Entrega 1}
+\begin{itemize}
+    \item Atividade para de ser um CE fraco ligado a infraestrutura.
+    \item Requisita (Atividade, Infraestrutura) agora é uma agregação que precisa ser aprovada por um funcionário.
+\end{itemize}
+
+\section*{Mapeamento Relacional}
+
+\begin{enumerate}
+    \item \textbf{PESSOA} (\underline{cpf}, nome, email, celular, data\_nascimento)
+        \begin{itemize}
+            \item \textbf{PK:} (cpf)
+            \item \textbf{UN1:} (nusp)
+            \item \textbf{UN2:} (email)
+        \end{itemize}
+
+    \item \textbf{INTERNO} (\underline{nusp}, cpf)
+        \begin{itemize}
+            \item \textbf{PK:} nusp
+            \item \textbf{FK:} cpf $\rightarrow$ PESSOA(cpf)
+            \item \textbf{UN:} cpf
+        \end{itemize}
+
+    \item \textbf{FUNCIONARIO} (\underline{nusp}, formacao)
+        \begin{itemize}
+            \item \textbf{PK:} nusp
+            \item \textbf{FK:} nusp $\rightarrow$ INTERNO(nusp)
+        \end{itemize}
+        
+    \item \textbf{RESTRICOES} (\underline{nusp}, \underline{restricao})
+        \begin{itemize}
+            \item \textbf{PK:} (nusp, restricao)
+            \item \textbf{FK:} nusp $\rightarrow$ FUNCIONARIO(nusp)
+        \end{itemize}
+
+    \item \textbf{EDUCADOR\_FISICO} (\underline{numero\_conselho}, nusp)
+        \begin{itemize}
+            \item \textbf{PK:} numero\_conselho
+            \item \textbf{FK:} nusp $\rightarrow$ FUNCIONARIO(nusp)
+            \item \textbf{UN:} unique(nusp)
+        \end{itemize}
+
+    \item \textbf{ESPAÇO} (\underline{bloco}, \underline{numero}, nome)
+        \begin{itemize}
+            \item \textbf{PK:} (bloco, numero)
+        \end{itemize}
+
+    \item \textbf{INSTALACAO\_RESERVAVEL} (\underline{bloco\_espaco}, \underline{numero\_espaco}, nome)
+        \begin{itemize}
+            \item \textbf{PK:} (bloco\_espaco, numero\_espaco)
+            \item \textbf{FK:} (bloco\_espaco, numero\_espaco) $\rightarrow$ ESPACO(bloco, numero)
+        \end{itemize}
+
+    \item \textbf{INSTALACAO\_NAO\_RESERVAVEL} (\underline{bloco\_espaco}, \underline{numero\_espaco}, nome)
+        \begin{itemize}
+            \item \textbf{PK:} (bloco\_espaco, numero\_espaco)
+            \item \textbf{FK:} (bloco\_espaco, numero\_espaco) $\rightarrow$ ESPACO(bloco, numero)
+        \end{itemize}
+
+    \item \textbf{EQUIPAMENTO} (\underline{id\_patrimonial}, bloco\_espaco, numero\_espaco, preco, data\_aquisicao)
+        \begin{itemize}
+            \item \textbf{PK:} id\_patrimonial
+            \item \textbf{FK:} (bloco\_espaco, numero\_espaco) $\rightarrow$ ESPAÇO (bloco, numero)
+        \end{itemize}
+        
+    \item \textbf{DOACAO} (\underline{id\_doacao}, cpf\_doador)
+        \begin{itemize}
+            \item \textbf{PK:} id\_doacao
+            \item \textbf{FK:} id\_doacao $\rightarrow$ EQUIPAMENTO(id\_patrimonial)
+            \item \textbf{FK:} cpf\_doador $\rightarrow$ PESSOA(cpf)
+        \end{itemize}
+
+    \item \textbf{CORRIGIR: RESERVA\_INSTALACAO} (\underline{nusp}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+         \begin{itemize}
+            \item \textit{Nota: A PK parece estar definida incorretamente nos scans, esta é uma interpretação.}
+            \item \textbf{FK1:} id\_instalacao $\rightarrow$ INSTALACAO\_RESERVAVEL(id)
+            \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(nusp)
+        \end{itemize}
+        
+    \item \textbf{CORRIGIR: RESERVA\_EQUIPAMENTO} (\underline{nusp}, \underline{id\_patrimonial}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (nusp, id\_patrimonial, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} id\_patrimonial $\rightarrow$ EQUIPAMENTO(id)
+            \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(nusp)
+        \end{itemize}
+
+    \item \textbf{GRUPO\_DE\_EXTENSAO} (\underline{nome}, descricao, responsavel)
+        \begin{itemize}
+            \item \textbf{PK:} nome
+            \item \textbf{FK:} responsavel $\rightarrow$ INTERNO(nusp)
+        \end{itemize}
+
+    \item \textbf{ATRIBUICOES} (\underline{nusp}, \underline{atribuicao})
+        \begin{itemize}
+            \item \textbf{PK:} (nusp, atribuicao) \textit{Nota: O documento original lista "restricao" na PK, corrigido para "atribuicao" para consistência.}
+            \item \textbf{FK:} nusp $\rightarrow$ FUNCIONARIO(nusp)
+        \end{itemize}
+
+    \item \textbf{EVENTO} (\underline{nusp\_responsavel}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim}, descrição, educador\_fisico, nome\_evento)
+        \begin{itemize}
+            \item \textbf{PK:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} (nusp\_responsavel, id\_instalacao, data, horario\_inicio, horario\_fim) $\rightarrow$ RESERVA\_INSTALACAO(nusp, id\_instalacao, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+        \end{itemize}
+
+    \item \textbf{ATIVIDADE} (\underline{nusp\_responsavel}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim}, descrição, educador\_fisico, nome\_atividade, numero\_vagas)
+        \begin{itemize}
+            \item \textbf{PK:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} (nusp\_responsavel, id\_instalacao, data, horario\_inicio, horario\_fim) $\rightarrow$ RESERVA\_INSTALACAO(nusp, id\_instalacao, data, horario\_inicio, horario\_fim, educador\_fisico)
+            \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+        \end{itemize}
+
+    \item \textbf{ATIVIDADE\_PERIODICA} (\underline{nusp\_responsavel}, \underline{bloco\_instalacao}, \underline{numero\_instalacao}, \underline{cron}, educador\_fisico)
+        \begin{itemize}
+            \item \textbf{PK:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, cron)
+            \item \textbf{FK1:} nusp\_responsavel $\rightarrow$ INTERNO(nusp)
+            \item \textbf{FK2:} (bloco\_instalacao, numero\_instalacao) $\rightarrow$ INSTALACAO\_RESERVAVEL(bloco, numero)
+            \item \textbf{FK3:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+        \end{itemize}
+
+    \item \textbf{ATIVIDADES\_EXTENSAO} (\underline{nome\_extensao}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (nome\_extensao, nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} nome\_extensao $\rightarrow$ GRUPO\_DE\_EXTENSAO(nome)
+            \item \textbf{FK2:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim) $\rightarrow$ ATIVIDADE(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+
+    \item \textbf{EVENTOS\_EXTENSAO} (\underline{nome\_extensao}, \underline{nusp\_responsavel}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (nome\_extensao, nusp\_responsavel, id\_instalacao, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} nome\_extensao $\rightarrow$ GRUPO\_DE\_EXTENSAO(nome)
+            \item \textbf{FK2:} (nusp\_responsavel, id\_instalacao, data, horario\_inicio, horario\_fim) $\rightarrow$ EVENTO(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+        
+    \item \textbf{ATIVIDADES\_PERIODICAS\_EXTENSAO} (\underline{nome\_extensao}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{cron})
+        \begin{itemize}
+            \item \textbf{PK:} (nome\_extensao, nusp\_responsavel,bloco\_espaco, numero\_espaco, cron)
+            \item \textbf{FK1:} nome\_extensao $\rightarrow$ GRUPO\_DE\_EXTENSAO(nome)
+            \item \textbf{FK2:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, cron) $\rightarrow$ ATIVIDADE\_PERIODICA (nusp\_responsavel, bloco\_espaco, numero\_espaco, cron)
+        \end{itemize}
+
+    \item \textbf{PARTICIPACAO\_ATIVIDADE} (\underline{cpf\_participante}, \underline{nusp\_convidante}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_participante, nusp\_convidante, nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} cpf\_participante $\rightarrow$ PESSOA(cpf)
+            \item \textbf{FK2:} nusp\_convidante $\rightarrow$ INTERNO(nusp)
+            \item \textbf{FK3:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim) $\rightarrow$ ATIVIDADE(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+
+    \item \textbf{PARTICIPACAO\_ATIVIDADES\_PERIODICAS} (\underline{cpf\_participante}, \underline{nusp\_convidante}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{cron})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_participante, nusp\_convidante, nusp\_responsavel,bloco\_espaco, numero\_espaco, cron)
+            \item \textbf{FK1:} cpf\_participante $\rightarrow$ PESSOA(cpf)
+            \item \textbf{FK2:} nusp\_convidante $\rightarrow$ INTERNO(nusp)
+            \item \textbf{FK3:} (nusp\_responsavel,bloco\_espaco, numero\_espaco, cron) $\rightarrow$ ATIVIDADE\_PERIODICA(nusp\_responsavel,bloco\_espaco, numero\_espaco, cron)
+        \end{itemize}
+
+    \item \textbf{PARTICIPACAO\_EVENTO} (\underline{cpf\_participante}, \underline{nusp\_convidante}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_participante, nusp\_convidante, nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} cpf\_participante $\rightarrow$ PESSOA(cpf)
+            \item \textbf{FK2:} nusp\_convidante $\rightarrow$ INTERNO(nusp)
+            \item \textbf{FK3:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim) $\rightarrow$ EVENTO(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+        
+    \item \textbf{SUPERVISAO\_ATIVIDADE} (\underline{numero\_conselho}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{PK:} (numero\_conselho, nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+            \item \textbf{FK1:} numero\_conselho $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+            \item \textbf{FK2:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim) $\rightarrow$ ATIVIDADE(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+
+    \item \textbf{SUPERVISAO\_ATIVIDADE\_PERIODICA} (\underline{numero\_conselho}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{cron})
+        \begin{itemize}
+            \item \textbf{FK1:} numero\_conselho $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+            \item \textbf{FK2:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, cron) $\rightarrow$ ATIVIDADE\_PERIODICA(nusp\_responsavel, bloco\_espaco, numero\_espaco, cron)
+        \end{itemize}
+
+    \item \textbf{SUPERVISAO\_EVENTO} (\underline{numero\_conselho}, \underline{nusp\_responsavel}, \underline{bloco\_espaco}, \underline{numero\_espaco}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+        \begin{itemize}
+            \item \textbf{FK1:} numero\_conselho $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+            \item \textbf{FK2:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim) $\rightarrow$ EVENTO(nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
+        \end{itemize}
+\end{enumerate}
+
+\section*{Observações}
+\begin{itemize}
+    \item Consideramos que todo funcionário é interno e pode participar de uma atividade.
+    \item Que apenas funcionários formados em educação física podem organizar atividades.
+    \item Utilizamos chaves naturais para fins didáticos, mas fica evidente que talvez chaves artificiais facilitariam a visualização.
+    \item Mapeamento de Pessoa $\rightarrow$ (Interno, Externo) na forma G+N (G1), podendo ser verificada pela nulicidade do NUSP.
+    \item Mapeamento de Interno $\rightarrow$ (Funcionário\_Cefer) na forma G+N (G1), pelo atributo Categoria.
+    \item Mapeamento de Funcionário\_Cefer $\rightarrow$ (Educador\_físico) na forma 1G (G5), por se tratarem de poucos atributos específicos e possibilidade de novas especializações futuras em possíveis expansões do sistema.
+    \item Mapeamento de Infraestrutura $\rightarrow$ (Equipamento, Espaço, Aparelho) na forma G+N (G1), pelo atributo Categoria.
+\end{itemize}
+
+\end{document}
