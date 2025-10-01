@@ -54,21 +54,9 @@
             \item \textbf{UN:} unique(nusp)
         \end{itemize}
 
-    \item \textbf{ESPAÇO} (\underline{bloco}, \underline{numero}, nome)
+    \item \textbf{ESPAÇO} (\underline{bloco}, \underline{numero}, nome, eh\_reservavel)
         \begin{itemize}
             \item \textbf{PK:} (bloco, numero)
-        \end{itemize}
-
-    \item \textbf{INSTALACAO\_RESERVAVEL} (\underline{bloco\_espaco}, \underline{numero\_espaco}, nome)
-        \begin{itemize}
-            \item \textbf{PK:} (bloco\_espaco, numero\_espaco)
-            \item \textbf{FK:} (bloco\_espaco, numero\_espaco) $\rightarrow$ ESPACO(bloco, numero)
-        \end{itemize}
-
-    \item \textbf{INSTALACAO\_NAO\_RESERVAVEL} (\underline{bloco\_espaco}, \underline{numero\_espaco}, nome)
-        \begin{itemize}
-            \item \textbf{PK:} (bloco\_espaco, numero\_espaco)
-            \item \textbf{FK:} (bloco\_espaco, numero\_espaco) $\rightarrow$ ESPACO(bloco, numero)
         \end{itemize}
 
     \item \textbf{EQUIPAMENTO} (\underline{id\_patrimonial}, bloco\_espaco, numero\_espaco, preco, data\_aquisicao)
@@ -87,14 +75,14 @@
     \item \textbf{CORRIGIR: RESERVA\_INSTALACAO} (\underline{nusp}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
          \begin{itemize}
             \item \textit{Nota: A PK parece estar definida incorretamente nos scans, esta é uma interpretação.}
-            \item \textbf{FK1:} id\_instalacao $\rightarrow$ INSTALACAO\_RESERVAVEL(id)
+            \item \textbf{FK1:} id\_instalacao $\rightarrow$ INSTALACAO\_RESERVAVEL(id\_reservavel)
             \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(nusp)
         \end{itemize}
         
     \item \textbf{CORRIGIR: RESERVA\_EQUIPAMENTO} (\underline{nusp}, \underline{id\_patrimonial}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
         \begin{itemize}
             \item \textbf{PK:} (nusp, id\_patrimonial, data, horario\_inicio, horario\_fim)
-            \item \textbf{FK1:} id\_patrimonial $\rightarrow$ EQUIPAMENTO(id)
+            \item \textbf{FK1:} id\_patrimonial $\rightarrow$ EQUIPAMENTO(id\_patrimonial)
             \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(nusp)
         \end{itemize}
 
