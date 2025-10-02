@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1759361415.18264 "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" "relacional.pdf" "relacional" 1759361415.48483 0
+["pdflatex"] 1759363591.47448 "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" "relacional.pdf" "relacional" 1759363591.79523 0
   "/etc/texmf/web2c/texmf.cnf" 1743436801.01116 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" 1759361415.02704 13602 5136441613ee7ebc987cd78b328487a2 ""
+  "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" 1759363591.31171 13260 8f157727a044b6efe7bd96a493dbdb2e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -46,8 +46,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1759335673.26937 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1759335731 8214614 803bafd880cd4abd4b9ccab7b6dca363 ""
-  "relacional.aux" 1759361415.45776 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
-  "relacional.tex" 1759361415.02704 13602 5136441613ee7ebc987cd78b328487a2 ""
+  "relacional.aux" 1759363591.76459 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
+  "relacional.tex" 1759363591.31171 13260 8f157727a044b6efe7bd96a493dbdb2e ""
   (generated)
   "relacional.aux"
   "relacional.log"

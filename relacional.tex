@@ -24,15 +24,14 @@
     \item \textbf{PESSOA} (\underline{cpf}, nome, email, celular, data\_nascimento)
         \begin{itemize}
             \item \textbf{PK:} (cpf)
-            \item \textbf{UN1:} (nusp)
-            \item \textbf{UN2:} (email)
+            \item \textbf{UN1:} (email)
         \end{itemize}
 
-    \item \textbf{INTERNO} (\underline{nusp}, cpf)
+    \item \textbf{INTERNO} (\underline{nusp}, cpf, categoria)
         \begin{itemize}
-            \item \textbf{PK:} nusp
+            \item \textbf{PK:} cpf
             \item \textbf{FK:} cpf $\rightarrow$ PESSOA(cpf)
-            \item \textbf{UN:} cpf
+            \item \textbf{UN:} nusp
         \end{itemize}
 
     \item \textbf{FUNCIONARIO} (\underline{nusp}, formacao)
@@ -72,11 +71,10 @@
             \item \textbf{FK:} cpf\_doador $\rightarrow$ PESSOA(cpf)
         \end{itemize}
 
-    \item \textbf{CORRIGIR: RESERVA\_INSTALACAO} (\underline{nusp}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
+    \item \textbf{CORRIGIR: RESERVA\_ESPACO} (\underline{nusp}, \underline{bloco}, \underline{numero} \underline{data}, \underline{horario\_inicio}, horario\_fim)
          \begin{itemize}
-            \item \textit{Nota: A PK parece estar definida incorretamente nos scans, esta é uma interpretação.}
-            \item \textbf{FK1:} id\_instalacao $\rightarrow$ INSTALACAO\_RESERVAVEL(id\_reservavel)
-            \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(nusp)
+            \item \textbf{FK1:} bloco, numero $\rightarrow$ ESPACO (bloco, numero)
+            \item \textbf{FK2:} nusp $\rightarrow$ INTERNO (nusp)
         \end{itemize}
         
     \item \textbf{CORRIGIR: RESERVA\_EQUIPAMENTO} (\underline{nusp}, \underline{id\_patrimonial}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim})
@@ -105,11 +103,12 @@
             \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
         \end{itemize}
 
-    \item \textbf{ATIVIDADE} (\underline{nusp\_responsavel}, \underline{id\_instalacao}, \underline{data}, \underline{horario\_inicio}, \underline{horario\_fim}, descrição, educador\_fisico, nome\_atividade, numero\_vagas)
+    \item \textbf{ATIVIDADE} (\underline{id\_atividade}, id\_instalacao, horario\_inicio, horario\_fim, descrição, educador\_fisico, nome\_atividade, numero\_vagas)
         \begin{itemize}
-            \item \textbf{PK:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio, horario\_fim)
-            \item \textbf{FK1:} (nusp\_responsavel, id\_instalacao, data, horario\_inicio, horario\_fim) $\rightarrow$ RESERVA\_INSTALACAO(nusp, id\_instalacao, data, horario\_inicio, horario\_fim, educador\_fisico)
+            \item \textbf{PK:} (id\_atividade)
+            \item \textbf{FK1:} (bloco, numero) $\rightarrow$ ESPACO (bloco, numero)
             \item \textbf{FK2:} educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(numero\_conselho)
+            \item \textbf{UN:} (nusp\_responsavel, bloco\_espaco, numero\_espaco, data, horario\_inicio)
         \end{itemize}
 
     \item \textbf{ATIVIDADE\_PERIODICA} (\underline{nusp\_responsavel}, \underline{bloco\_instalacao}, \underline{numero\_instalacao}, \underline{cron}, educador\_fisico)
