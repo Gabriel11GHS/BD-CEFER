@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1759363591.47448 "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" "relacional.pdf" "relacional" 1759363591.79523 0
+["pdflatex"] 1759529810.13937 "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" "relacional.pdf" "relacional" 1759529810.42912 0
   "/etc/texmf/web2c/texmf.cnf" 1743436801.01116 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" 1759363591.31171 13260 8f157727a044b6efe7bd96a493dbdb2e ""
+  "/home/gabrielghs/Documentos/USP/Lab-BD/BD-CEFER/relacional.tex" 1759529809.97475 8508 62357020c7b7c7b8f7716041e89f48fd ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -16,14 +16,12 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1136768653 1124 6c73e740cf17375f03eec0ee63599741 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty" 1644112042 7237 bdd120a32c8fdb4b433cf9ca2e7cd98a ""
   "/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty" 1572645307 1057 525c2192b5febbd8c1f662c9468335bb ""
@@ -46,8 +44,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1759335673.26937 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1759335731 8214614 803bafd880cd4abd4b9ccab7b6dca363 ""
-  "relacional.aux" 1759363591.76459 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
-  "relacional.tex" 1759363591.31171 13260 8f157727a044b6efe7bd96a493dbdb2e ""
+  "relacional.aux" 1759529810.40374 32 ab05033ccbb38b00a31b200ccedf8001 "pdflatex"
+  "relacional.tex" 1759529809.97475 8508 62357020c7b7c7b8f7716041e89f48fd ""
   (generated)
   "relacional.aux"
   "relacional.log"
