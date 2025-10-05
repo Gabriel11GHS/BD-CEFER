@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Mapeamento ME-RX para Modelo Relacional}
+\author{Breno Rodrigues - 11734142 \and Erick Barcelos - 11345562 \and Gabriel Henrique dos Santos - 13783972 \and Lourenço Roselino - 11796805 \and Nelson Luiz - 9793502}
+\date{Setembro 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Mudanças da Entrega 1}
+\begin{itemize}
+    \item Atividade para de ser um CE fraco ligado a infraestrutura.
+    \item Requisita (Atividade, Infraestrutura) agora é uma agregação que precisa ser aprovada por um funcionário.
+\end{itemize}
+
+\section*{Mapeamento Relacional}
+
+\begin{enumerate}
+    \item \textbf{PESSOA} (\underline{cpf}, nome, email, celular, data\_nascimento)
+        \begin{itemize}
+            \item \textbf{PK:} (cpf)
+            \item \textbf{UN1:} (email)
+        \end{itemize}
+
+    \item \textbf{INTERNO\_USP} (\underline{cpf\_pessoa}, nusp, categoria)
+        \begin{itemize}
+            \item \textbf{PK:} cpf\_pessoa
+            \item \textbf{FK:} cpf\_pessoa $\rightarrow$ PESSOA(cpf)
+            \item \textbf{UN1:} (nusp)
+        \end{itemize}
+
+    \item \textbf{FUNCIONARIO} (\underline{cpf\_interno}, formacao)
+        \begin{itemize}
+            \item \textbf{PK:} cpf\_interno
+            \item \textbf{FK:} cpf\_interno $\rightarrow$ INTERNO\_USP(cpf\_pessoa)
+        \end{itemize}
+        
+    \item \textbf{EDUCADOR\_FISICO} (\underline{cpf\_funcionario}, numero\_conselho)
+        \begin{itemize}
+            \item \textbf{PK:} cpf\_funcionario
+            \item \textbf{FK:} cpf\_funcionario $\rightarrow$ FUNCIONARIO(cpf\_interno)
+            \item \textbf{UN1:} (numero\_conselho)
+        \end{itemize}
+        
+    \item \textbf{FUNCIONARIO\_ATRIBUICAO} (\underline{cpf\_funcionario}, \underline{atribuicao})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_funcionario, atribuicao)
+            \item \textbf{FK:} cpf\_funcionario $\rightarrow$ FUNCIONARIO(cpf\_interno)
+        \end{itemize}
+
+    \item \textbf{FUNCIONARIO\_RESTRICAO} (\underline{cpf\_funcionario}, \underline{restricao\_fisica})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_funcionario, restricao\_fisica)
+            \item \textbf{FK:} cpf\_funcionario $\rightarrow$ FUNCIONARIO(cpf\_interno)
+        \end{itemize}
+
+    \item \textbf{INSTALACAO} (\underline{nome}, \underline{tipo}, capacidade, eh\_reservavel)
+        \begin{itemize}
+            \item \textbf{PK:} (nome, tipo)
+        \end{itemize}
+
+    \item \textbf{EQUIPAMENTO} (\underline{id\_patrimonio}, nome, preco\_aquisicao, data\_aquisicao, nome\_instalacao, tipo\_instalacao)
+        \begin{itemize}
+            \item \textbf{PK:} id\_patrimonio
+            \item \textbf{FK:} (nome\_instalacao, tipo\_instalacao) $\rightarrow$ INSTALACAO(nome, tipo)
+        \end{itemize}
+        
+    \item \textbf{DOACAO} (\underline{id\_equipamento}, cpf\_doador, data\_doacao)
+        \begin{itemize}
+            \item \textbf{PK:} id\_equipamento
+            \item \textbf{FK1:} id\_equipamento $\rightarrow$ EQUIPAMENTO(id\_patrimonio)
+            \item \textbf{FK2:} cpf\_doador $\rightarrow$ PESSOA(cpf)
+        \end{itemize}
+
+    \item \textbf{RESERVA} (\underline{cpf\_responsavel\_interno}, \underline{nome\_instalacao}, \underline{tipo\_instalacao}, \underline{data\_reserva}, \underline{horario\_inicio}, horario\_fim)
+         \begin{itemize}
+            \item \textbf{PK:} (cpf\_responsavel\_interno, nome\_instalacao, tipo\_instalacao, data\_reserva, horario\_inicio)
+            \item \textbf{FK1:} (nome\_instalacao, tipo\_instalacao) $\rightarrow$ INSTALACAO(nome, tipo)
+            \item \textbf{FK2:} cpf\_responsavel\_interno $\rightarrow$ INTERNO\_USP(cpf\_pessoa)
+        \end{itemize}
+        
+    \item \textbf{ATIVIDADE} (\underline{id\_atividade}, nome, data\_inicio\_periodo, vagas\_limite, data\_fim\_periodo)
+    \begin{itemize}
+        \item \textbf{PK:} id\_atividade 
+        \item \textbf{UN1:} (nome, data\_inicio\_periodo)
+    \end{itemize}
+
+    \item \textbf{OCORRENCIA\_SEMANAL} (\underline{id\_ocorrencia}, id\_atividade, id\_instalacao, dia\_semana, horario\_inicio, horario\_fim)
+    \begin{itemize}
+        \item \textbf{PK:} id\_ocorrencia
+        \item \textbf{FK1:} id\_atividade $\rightarrow$ ATIVIDADE(id\_atividade)
+        \item \textbf{FK2:} id\_instalacao $\rightarrow$ INSTALACAO(id\_instalacao)
+        \item \textbf{UN1:} (id\_atividade, id\_instalacao, dia\_semana, horario\_inicio)
+    \end{itemize}
+        
+    \item \textbf{CONDUZ\_ATIVIDADE} (\underline{cpf\_educador\_fisico}, \underline{nome\_atividade}, \underline{data\_inicio\_periodo\_ativ})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_educador\_fisico, nome\_atividade, data\_inicio\_periodo\_ativ)
+            \item \textbf{FK1:} cpf\_educador\_fisico $\rightarrow$ EDUCADOR\_FISICO(cpf\_funcionario)
+            \item \textbf{FK2:} (nome\_atividade, data\_inicio\_periodo\_ativ) $\rightarrow$ ATIVIDADE(nome, data\_inicio\_periodo)
+        \end{itemize}
+
+    \item \textbf{PARTICIPACAO\_ATIVIDADE} (\underline{cpf\_participante}, \underline{nome\_atividade}, \underline{data\_inicio\_periodo\_ativ}, cpf\_convidante\_interno, data\_inscricao)
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_participante, nome\_atividade, data\_inicio\_periodo\_ativ)
+            \item \textbf{FK1:} cpf\_participante $\rightarrow$ PESSOA(cpf)
+            \item \textbf{FK2:} (nome\_atividade, data\_inicio\_periodo\_ativ) $\rightarrow$ ATIVIDADE(nome, data\_inicio\_periodo)
+            \item \textbf{FK3:} cpf\_convidante\_interno $\rightarrow$ INTERNO\_USP(cpf\_pessoa)
+        \end{itemize}
+        
+    \item \textbf{EVENTO} (\underline{nome}, \underline{data\_evento}, descricao, cpf\_resp\_reserva, nome\_inst\_reserva, tipo\_inst\_reserva, data\_reserva, horainicio\_reserva)
+        \begin{itemize}
+            \item \textbf{PK:} (nome, data\_evento)
+            \item \textbf{FK:} (cpf\_resp\_reserva, nome\_inst\_reserva, tipo\_inst\_reserva, data\_reserva, horainicio\_reserva) $\rightarrow$ RESERVA(cpf\_responsavel\_interno, nome\_instalacao, tipo\_instalacao, data\_reserva, horario\_inicio)
+        \end{itemize}
+        
+    \item \textbf{SUPERVISAO\_EVENTO} (\underline{cpf\_funcionario}, \underline{nome\_evento}, \underline{data\_evento})
+        \begin{itemize}
+            \item \textbf{PK:} (cpf\_funcionario, nome\_evento, data\_evento)
+            \item \textbf{FK1:} cpf\_funcionario $\rightarrow$ FUNCIONARIO(cpf\_interno)
+            \item \textbf{FK2:} (nome\_evento, data\_evento) $\rightarrow$ EVENTO(nome, data\_evento)
+        \end{itemize}
+
+    \item \textbf{GRUPO\_EXTENSAO} (\underline{nome\_grupo}, descricao, cpf\_responsavel\_interno)
+        \begin{itemize}
+            \item \textbf{PK:} nome\_grupo
+            \item \textbf{FK:} cpf\_responsavel\_interno $\rightarrow$ INTERNO\_USP(cpf\_pessoa)
+        \end{itemize}
+
+    \item \textbf{ATIVIDADE\_GRUPO\_EXTENSAO} (\underline{nome\_atividade}, \underline{data\_inicio\_periodo\_ativ}, \underline{nome\_grupo})
+        \begin{itemize}
+            \item \textbf{PK:} (nome\_atividade, data\_inicio\_periodo\_ativ, nome\_grupo)
+            \item \textbf{FK1:} (nome\_atividade, data\_inicio\_periodo\_ativ) $\rightarrow$ ATIVIDADE(nome, data\_inicio\_periodo)
+            \item \textbf{FK2:} nome\_grupo $\rightarrow$ GRUPO\_EXTENSAO(nome\_grupo)
+        \end{itemize}
+\end{enumerate}
+
+\end{document}
