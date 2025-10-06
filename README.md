@@ -1,5 +1,5 @@
 # db_project
-
+Ambiente de desenvolvimento: WSL Ubuntu. 
 ## Como rodar
 
 ### 1. Instalar o Docker
@@ -30,4 +30,13 @@ docker compose up -d
 docker exec -it postgres17 bash
 su postgres
 psql
+```
+
+### 2. Instalar dependências do Python
+
+```
+sudo apt install python3.12-venv
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
 ```
