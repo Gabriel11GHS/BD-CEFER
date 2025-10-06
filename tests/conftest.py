@@ -12,10 +12,6 @@ from dbsession import DBSession
 
 @pytest.fixture
 def dbsession():
-    """Create a `tests` schema, yield a DBSession bound to it, and drop the schema on teardown.
-
-    Shared fixture for tests that need a DBSession scoped to the `tests` schema.
-    """
     # ensure clean state - drop schema if it exists
     with DBSession() as db:
         with db.connection.cursor() as cur:

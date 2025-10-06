@@ -15,13 +15,11 @@ class DBSession:
         )
         self.schema = schema
         if self.schema:
-            # set the search_path safely using an identifier
             try:
                 with self.connection.cursor() as cur:
                     cur.execute(sql.SQL("SET search_path TO {};").format(sql.Identifier(self.schema)))
                 self.connection.commit()
             except Exception:
-                # If setting search_path fails, rollback and continue (errors will surface on use)
                 self.connection.rollback()
     
     def run_sql_file(self, path):
