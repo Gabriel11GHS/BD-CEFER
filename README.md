@@ -25,18 +25,24 @@ Na pasta do repositório clonado
 docker compose up -d
 ``` 
 
-### 4. (Opcional) Acessar psql
+### (Opcional) Acessar psql
 ```bash 
 docker exec -it postgres17 bash
 su postgres
 psql
 ```
 
-### 2. Instalar dependências do Python
+### 4. Instalar dependências do Python
 
 ```
 sudo apt install python3.12-venv
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
+```
+
+### 5. Rodar testes
+
+```
+pytest
 ```
