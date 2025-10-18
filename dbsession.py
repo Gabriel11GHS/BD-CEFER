@@ -3,9 +3,6 @@ from psycopg2 import sql
 
 class DBSession:
     def __init__(self, schema: str | None = None):
-        """Open a DB connection. If `schema` is provided, set the session
-        search_path to that schema so subsequent SQL runs operate there.
-        """
         self.connection = psycopg2.connect(
             host='localhost',
             port=5432,
@@ -33,12 +30,11 @@ class DBSession:
             self.connection.rollback()
             print(f"Error executing query from file {path}: {e}")
 
-    
     def close(self):
         self.connection.close()
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, *args):
         self.close()

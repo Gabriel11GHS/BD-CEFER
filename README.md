@@ -44,5 +44,5 @@ pip install -r requirements.txt
 ### 5. Rodar testes
 
 ```
-pytest
+pytest -s
 ```

@@ -1,7 +1,6 @@
 import pytest
 from migrations import Migrations
 
-# List all tables that should be created according to the upgrade SQL.
 TABLES = [
     "PESSOA",
     "INTERNO_USP",
@@ -24,10 +23,9 @@ TABLES = [
 ]
 
 def test_schema_migrations(dbsession):
-    migrations = Migrations(schema='tests')
+    migrations = Migrations(dbsession=dbsession)
     migrations.upgrade_schema()
 
-    # Tests if tables were created
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:
             cursor.execute(
@@ -39,7 +37,6 @@ def test_schema_migrations(dbsession):
 
     migrations.downgrade_schema()
 
-    # Tests if tables were dropped
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:
             cursor.execute(
@@ -47,4 +44,4 @@ def test_schema_migrations(dbsession):
                 (table,)
             )
             count = cursor.fetchone()[0]
-            assert count == 0, f"Table {table} still exists in schema 'tests' (count={count})"
+            assert count == 0, f"Table {table} still exists in schema 'tests'"
