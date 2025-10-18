@@ -1,3 +1,4 @@
+# test_populate_db.py
 import pytest
 from migrations import Migrations
 
@@ -21,6 +22,7 @@ def table_exists(cursor, table_name, schema='tests'):
 def test_upgrade_and_downgrade_populate_db(dbsession):
     migrations = Migrations(dbsession=dbsession)
 
+    # Upgrade completo do banco populado
     migrations.upgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
@@ -52,6 +54,7 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
         assert count_table_records(cursor, 'GRUPO_EXTENSAO') == 4
         assert count_table_records(cursor, 'ATIVIDADE_GRUPO_EXTENSAO') == 6
 
+    # Downgrade completo
     migrations.downgrade_populated_db()
 
     # Verifica se todas as tabelas foram removidas

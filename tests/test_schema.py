@@ -1,3 +1,4 @@
+# test_schema.py
 import pytest
 from migrations import Migrations
 
@@ -24,7 +25,8 @@ TABLES = [
 
 def test_schema_migrations(dbsession):
     migrations = Migrations(dbsession=dbsession)
-    migrations.upgrade_schema()
+    
+    migrations.upgrade('schema')
 
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:
@@ -35,7 +37,7 @@ def test_schema_migrations(dbsession):
             count = cursor.fetchone()[0]
             assert count == 1, f"Table {table} was not created in schema 'tests'"
 
-    migrations.downgrade_schema()
+    migrations.downgrade('schema')
 
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:
