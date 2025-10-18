@@ -113,6 +113,18 @@ class Migrations:
     def downgrade_supervisao_evento(self) -> None:
         self.run_migration('downgrade_supervisao_evento.sql')
 
+    def upgrade_grupo_extensao(self) -> None:
+        self.run_migration('upgrade_grupo_extensao.sql')
+
+    def downgrade_grupo_extensao(self) -> None:
+        self.run_migration('downgrade_grupo_extensao.sql')
+
+    def upgrade_atividade_grupo_extensao(self) -> None:
+        self.run_migration('upgrade_atividade_grupo_extensao.sql')
+
+    def downgrade_atividade_grupo_extensao(self) -> None:
+        self.run_migration('downgrade_atividade_grupo_extensao.sql')
+
     def upgrade_populated_db(self) -> None:
         self.upgrade_schema()
         self.upgrade_pessoa()
@@ -131,8 +143,12 @@ class Migrations:
         self.upgrade_participacao_atividade()
         self.upgrade_evento()
         self.upgrade_supervisao_evento()
+        self.upgrade_grupo_extensao()
+        self.upgrade_atividade_grupo_extensao()
 
     def downgrade_populated_db(self) -> None:
+        self.downgrade_atividade_grupo_extensao()
+        self.downgrade_grupo_extensao()
         self.downgrade_supervisao_evento()
         self.downgrade_evento()
         self.downgrade_participacao_atividade()
