@@ -89,7 +89,31 @@ class Migrations:
     def downgrade_reserva(self):
         self.run_migration('downgrade_reserva.sql')
 
-    def upgrade_populated_db(self):
+    def upgrade_conduz_atividade(self) -> None:
+        self.run_migration('upgrade_conduz_atividade.sql')
+
+    def downgrade_conduz_atividade(self) -> None:
+        self.run_migration('downgrade_conduz_atividade.sql')
+
+    def upgrade_participacao_atividade(self) -> None:
+        self.run_migration('upgrade_participacao_atividade.sql')
+
+    def downgrade_participacao_atividade(self) -> None:
+        self.run_migration('downgrade_participacao_atividade.sql')
+
+    def upgrade_evento(self) -> None:
+        self.run_migration('upgrade_evento.sql')
+
+    def downgrade_evento(self) -> None:
+        self.run_migration('downgrade_evento.sql')
+
+    def upgrade_supervisao_evento(self) -> None:
+        self.run_migration('upgrade_supervisao_evento.sql')
+
+    def downgrade_supervisao_evento(self) -> None:
+        self.run_migration('downgrade_supervisao_evento.sql')
+
+    def upgrade_populated_db(self) -> None:
         self.upgrade_schema()
         self.upgrade_pessoa()
         self.upgrade_interno_usp()
@@ -103,8 +127,16 @@ class Migrations:
         self.upgrade_atividade()
         self.upgrade_ocorrencia_semanal()
         self.upgrade_reserva()
+        self.upgrade_conduz_atividade()
+        self.upgrade_participacao_atividade()
+        self.upgrade_evento()
+        self.upgrade_supervisao_evento()
 
-    def downgrade_populated_db(self):
+    def downgrade_populated_db(self) -> None:
+        self.downgrade_supervisao_evento()
+        self.downgrade_evento()
+        self.downgrade_participacao_atividade()
+        self.downgrade_conduz_atividade()
         self.downgrade_reserva()
         self.downgrade_ocorrencia_semanal()
         self.downgrade_atividade()

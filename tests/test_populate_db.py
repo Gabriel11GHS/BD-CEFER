@@ -39,10 +39,14 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
         assert count_table_records(cursor, 'EQUIPAMENTO') == 10
         assert count_table_records(cursor, 'DOACAO') == 3
         
-        # Verifica as novas tabelas de atividades e reservas
+        # Verifica as tabelas de atividades e reservas
         assert count_table_records(cursor, 'ATIVIDADE') == 6
         assert count_table_records(cursor, 'OCORRENCIA_SEMANAL') == 15
         assert count_table_records(cursor, 'RESERVA') == 6
+        assert count_table_records(cursor, 'CONDUZ_ATIVIDADE') == 6
+        assert count_table_records(cursor, 'PARTICIPACAO_ATIVIDADE') == 10
+        assert count_table_records(cursor, 'EVENTO') == 4
+        assert count_table_records(cursor, 'SUPERVISAO_EVENTO') == 5
 
     migrations.downgrade_populated_db()
 
@@ -51,7 +55,8 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
         "PESSOA", "INTERNO_USP", "FUNCIONARIO", 
         "FUNCIONARIO_ATRIBUICAO", "FUNCIONARIO_RESTRICAO", "EDUCADOR_FISICO",
         "INSTALACAO", "EQUIPAMENTO", "DOACAO",
-        "ATIVIDADE", "OCORRENCIA_SEMANAL", "RESERVA"
+        "ATIVIDADE", "OCORRENCIA_SEMANAL", "RESERVA",
+        "CONDUZ_ATIVIDADE", "PARTICIPACAO_ATIVIDADE", "EVENTO", "SUPERVISAO_EVENTO"
     ]
     with dbsession.connection.cursor() as cursor:
         for table in tables:
