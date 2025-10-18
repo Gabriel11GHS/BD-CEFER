@@ -1,29 +1,40 @@
 from dbsession import DBSession
+from pathlib import Path
 
 class Migrations:
     def __init__(self, dbsession: DBSession):
         """Usa a DBSession existente"""
         self.dbsession = dbsession
-        self.folder = './sql'
+        self.folder = Path('./sql')
 
-    def run_migration(self, file: str, action: str) -> None:
-        path = f'{self.folder}/{file}'
+    def run_migration(self, file: str):
+        path = self.folder / file
         self.dbsession.run_sql_file(path)
 
-    def upgrade_schema(self) -> None:
-        self.run_migration('upgrade_schema.sql', 'Creating schema')
+    def upgrade_schema(self):
+        self.run_migration('upgrade_schema.sql')
 
-    def downgrade_schema(self) -> None:
-        self.run_migration('downgrade_schema.sql', 'Dropping schema')
+    def downgrade_schema(self):
+        self.run_migration('downgrade_schema.sql')
 
-    def upgrade_pessoa(self) -> None:
-        self.run_migration('upgrade_pessoa.sql', 'Adding pessoas')
+    def upgrade_pessoa(self):
+        self.run_migration('upgrade_pessoa.sql')
 
-    def downgrade_pessoa(self) -> None:
-        self.run_migration('downgrade_pessoa.sql', 'Removing pessoas')
+    def downgrade_pessoa(self):
+        self.run_migration('downgrade_pessoa.sql')
 
-    def upgrade_interno_usp(self) -> None:
-        self.run_migration('upgrade_interno_usp.sql', 'Adding internos')
+    def upgrade_interno_usp(self):
+        self.run_migration('upgrade_interno_usp.sql')
 
-    def downgrade_interno_usp(self) -> None:
-        self.run_migration('downgrade_interno_usp.sql', 'Removing internos')
+    def downgrade_interno_usp(self):
+        self.run_migration('downgrade_interno_usp.sql')
+
+    def upgrade_populated_db(self):
+        self.upgrade_schema()
+        self.upgrade_pessoa()
+        self.upgrade_interno_usp()
+    
+    def downgrade_populated_db(self):
+        self.downgrade_interno_usp()
+        self.downgrade_pessoa()
+        self.downgrade_schema()
