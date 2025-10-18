@@ -35,43 +35,61 @@ class Migrations:
     def downgrade_funcionario(self):
         self.run_migration('downgrade_funcionario.sql')
 
-    def upgrade_funcionario_atribuicao(self) -> None:
+    def upgrade_funcionario_atribuicao(self):
         self.run_migration('upgrade_funcionario_atribuicao.sql')
 
-    def downgrade_funcionario_atribuicao(self) -> None:
+    def downgrade_funcionario_atribuicao(self):
         self.run_migration('downgrade_funcionario_atribuicao.sql')
 
-    def upgrade_funcionario_restricao(self) -> None:
+    def upgrade_funcionario_restricao(self):
         self.run_migration('upgrade_funcionario_restricao.sql')
 
-    def downgrade_funcionario_restricao(self) -> None:
+    def downgrade_funcionario_restricao(self):
         self.run_migration('downgrade_funcionario_restricao.sql')
 
-    def upgrade_educador_fisico(self) -> None:
+    def upgrade_educador_fisico(self):
         self.run_migration('upgrade_educador_fisico.sql')
 
-    def downgrade_educador_fisico(self) -> None:
+    def downgrade_educador_fisico(self):
         self.run_migration('downgrade_educador_fisico.sql')
 
-    def upgrade_instalacao(self) -> None:
+    def upgrade_instalacao(self):
         self.run_migration('upgrade_instalacao.sql')
 
-    def downgrade_instalacao(self) -> None:
+    def downgrade_instalacao(self):
         self.run_migration('downgrade_instalacao.sql')
 
-    def upgrade_equipamento(self) -> None:
+    def upgrade_equipamento(self):
         self.run_migration('upgrade_equipamento.sql')
 
-    def downgrade_equipamento(self) -> None:
+    def downgrade_equipamento(self):
         self.run_migration('downgrade_equipamento.sql')
 
-    def upgrade_doacao(self) -> None:
+    def upgrade_doacao(self):
         self.run_migration('upgrade_doacao.sql')
 
-    def downgrade_doacao(self) -> None:
+    def downgrade_doacao(self):
         self.run_migration('downgrade_doacao.sql')
 
-    def upgrade_populated_db(self) -> None:
+    def upgrade_atividade(self):
+        self.run_migration('upgrade_atividade.sql')
+
+    def downgrade_atividade(self):
+        self.run_migration('downgrade_atividade.sql')
+
+    def upgrade_ocorrencia_semanal(self):
+        self.run_migration('upgrade_ocorrencia_semanal.sql')
+
+    def downgrade_ocorrencia_semanal(self):
+        self.run_migration('downgrade_ocorrencia_semanal.sql')
+
+    def upgrade_reserva(self):
+        self.run_migration('upgrade_reserva.sql')
+
+    def downgrade_reserva(self):
+        self.run_migration('downgrade_reserva.sql')
+
+    def upgrade_populated_db(self):
         self.upgrade_schema()
         self.upgrade_pessoa()
         self.upgrade_interno_usp()
@@ -82,8 +100,14 @@ class Migrations:
         self.upgrade_instalacao()
         self.upgrade_equipamento()
         self.upgrade_doacao()
+        self.upgrade_atividade()
+        self.upgrade_ocorrencia_semanal()
+        self.upgrade_reserva()
 
-    def downgrade_populated_db(self) -> None:
+    def downgrade_populated_db(self):
+        self.downgrade_reserva()
+        self.downgrade_ocorrencia_semanal()
+        self.downgrade_atividade()
         self.downgrade_doacao()
         self.downgrade_equipamento()
         self.downgrade_instalacao()
