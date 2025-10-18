@@ -53,8 +53,25 @@ class Migrations:
     def downgrade_educador_fisico(self) -> None:
         self.run_migration('downgrade_educador_fisico.sql')
 
+    def upgrade_instalacao(self) -> None:
+        self.run_migration('upgrade_instalacao.sql')
+
+    def downgrade_instalacao(self) -> None:
+        self.run_migration('downgrade_instalacao.sql')
+
+    def upgrade_equipamento(self) -> None:
+        self.run_migration('upgrade_equipamento.sql')
+
+    def downgrade_equipamento(self) -> None:
+        self.run_migration('downgrade_equipamento.sql')
+
+    def upgrade_doacao(self) -> None:
+        self.run_migration('upgrade_doacao.sql')
+
+    def downgrade_doacao(self) -> None:
+        self.run_migration('downgrade_doacao.sql')
+
     def upgrade_populated_db(self) -> None:
-        print("\tDatabase upgrade (populated)")
         self.upgrade_schema()
         self.upgrade_pessoa()
         self.upgrade_interno_usp()
@@ -62,10 +79,14 @@ class Migrations:
         self.upgrade_funcionario_atribuicao()
         self.upgrade_funcionario_restricao()
         self.upgrade_educador_fisico()
+        self.upgrade_instalacao()
+        self.upgrade_equipamento()
+        self.upgrade_doacao()
 
     def downgrade_populated_db(self) -> None:
-        """Executa todas as migrações de downgrade com dados populados"""
-        print("\tDatabase downgrade (populated)")
+        self.downgrade_doacao()
+        self.downgrade_equipamento()
+        self.downgrade_instalacao()
         self.downgrade_educador_fisico()
         self.downgrade_funcionario_restricao()
         self.downgrade_funcionario_atribuicao()
