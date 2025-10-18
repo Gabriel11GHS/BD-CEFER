@@ -24,13 +24,24 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
     migrations.upgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
+        # Verifica quantidade de registros nas tabelas principais
         assert count_table_records(cursor, 'PESSOA') == 20
         assert count_table_records(cursor, 'INTERNO_USP') == 10
         assert count_table_records(cursor, 'FUNCIONARIO') == 3
+        
+        # Verifica as novas tabelas
+        assert count_table_records(cursor, 'FUNCIONARIO_ATRIBUICAO') == 6
+        assert count_table_records(cursor, 'FUNCIONARIO_RESTRICAO') == 1
+        assert count_table_records(cursor, 'EDUCADOR_FISICO') == 2
 
     migrations.downgrade_populated_db()
 
-    tables = ["PESSOA", "INTERNO_USP", "FUNCIONARIO", "ATIVIDADE", "INSTALACAO"]
+    # Verifica se todas as tabelas foram removidas
+    tables = [
+        "PESSOA", "INTERNO_USP", "FUNCIONARIO", 
+        "FUNCIONARIO_ATRIBUICAO", "FUNCIONARIO_RESTRICAO", "EDUCADOR_FISICO",
+        "ATIVIDADE", "INSTALACAO"
+    ]
     with dbsession.connection.cursor() as cursor:
         for table in tables:
             assert not table_exists(cursor, table), f"Tabela {table} ainda existe após downgrade"
