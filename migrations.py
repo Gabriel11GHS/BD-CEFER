@@ -29,12 +29,20 @@ class Migrations:
     def downgrade_interno_usp(self):
         self.run_migration('downgrade_interno_usp.sql')
 
-    def upgrade_populated_db(self):
+    def upgrade_funcionario(self):
+        self.run_migration('upgrade_funcionario.sql')
+
+    def downgrade_funcionario(self):
+        self.run_migration('downgrade_funcionario.sql')
+
+    def upgrade_populated_db(self) -> None:
         self.upgrade_schema()
         self.upgrade_pessoa()
         self.upgrade_interno_usp()
-    
-    def downgrade_populated_db(self):
-        self.downgrade_interno_usp()
-        self.downgrade_pessoa()
-        self.downgrade_schema()
+        self.upgrade_funcionario()
+
+    def downgrade_populated_db(self) -> None:
+            self.downgrade_funcionario()
+            self.downgrade_interno_usp()
+            self.downgrade_pessoa()
+            self.downgrade_schema()

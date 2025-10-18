@@ -27,7 +27,6 @@ CREATE TABLE INTERNO_USP (
             'ALUNO_GRADUACAO', 
             'ALUNO_MESTRADO', 
             'ALUNO_DOUTORADO', 
-            'PROFESSOR', 
             'FUNCIONARIO'
         )
     )
