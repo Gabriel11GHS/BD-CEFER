@@ -4,12 +4,10 @@ from collections import OrderedDict
 from migrations import Migrations
 
 def count_table_records(cursor, table_name, schema='tests'):
-    """Função auxiliar para contar registros em uma tabela"""
     cursor.execute(f"SELECT COUNT(*) FROM {schema}.{table_name};")
     return cursor.fetchone()[0]
 
 def table_exists(cursor, table_name, schema='tests'):
-    """Função auxiliar para verificar se uma tabela existe"""
     cursor.execute(
         """
         SELECT COUNT(*)
@@ -20,8 +18,7 @@ def table_exists(cursor, table_name, schema='tests'):
     )
     return cursor.fetchone()[0] > 0
 
-def verify_expected_tables_records(cursor, EXPECTED_TABLES_RECORDS):
-    """Verifica se as tabelas têm a quantidade esperada de registros"""
+def assert_upgrade(cursor, EXPECTED_TABLES_RECORDS):
     for table_name, expected_count in EXPECTED_TABLES_RECORDS.items():
         actual_count = count_table_records(cursor, table_name)
         assert actual_count == expected_count, (
@@ -29,8 +26,7 @@ def verify_expected_tables_records(cursor, EXPECTED_TABLES_RECORDS):
             f"obtido {actual_count}"
         )
 
-def verify_tables_removed(cursor, tables):
-    """Verifica se todas as tabelas foram removidas após downgrade"""
+def assert_downgrade(cursor, tables):
     for table_name in tables:
         assert not table_exists(cursor, table_name), (
             f"Tabela {table_name} ainda existe após downgrade"
@@ -64,9 +60,9 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
     migrations.upgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
-        verify_expected_tables_records(cursor, EXPECTED_TABLES_RECORDS)
+        assert_upgrade(cursor, EXPECTED_TABLES_RECORDS)
 
     migrations.downgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
-        verify_tables_removed(cursor, ALL_TABLES)
+        assert_downgrade(cursor, ALL_TABLES)
