@@ -1,52 +1,56 @@
-# migrations.py
+from dataclasses import dataclass
+from abc import ABC
 from dbsession import DBSession
 from pathlib import Path
 
-class Migrations:
-    def __init__(self, dbsession: DBSession):
-        self.dbsession = dbsession
-        self.folder = Path('./sql')
-        
-        self.migration_order = [
-            'schema',
-            'pessoa', 
-            'interno_usp',
-            'funcionario',
-            'funcionario_atribuicao',
-            'funcionario_restricao',
-            'educador_fisico',
-            'instalacao',
-            'equipamento',
-            'doacao',
-            'atividade',
-            'ocorrencia_semanal', 
-            'reserva',
-            'conduz_atividade',
-            'participacao_atividade',
-            'evento',
-            'supervisao_evento',
-            'grupo_extensao',
-            'atividade_grupo_extensao'
-        ]
+@dataclass
+class BaseMigration:
+    dbsession: DBSession
+    folder: str = ''
+    
+    def upgrade(self, name: str):
+        folder_path = Path('./sql/') / self.folder
+        self.dbsession.run_sql_file(folder_path / f'upgrade_{name}.sql')
 
-    def run_migration(self, file: str):
-        path = self.folder / file
-        self.dbsession.run_sql_file(path)
+    def downgrade(self, name: str):
+        folder_path = Path('./sql/') / self.folder
+        self.dbsession.run_sql_file(folder_path / f'downgrade_{name}.sql')
 
-    def upgrade(self, migration_name: str):
-        """Executa upgrade de uma migração específica"""
-        self.run_migration(f'upgrade_{migration_name}.sql')
 
-    def downgrade(self, migration_name: str):
-        """Executa downgrade de uma migração específica"""
-        self.run_migration(f'downgrade_{migration_name}.sql')
+@dataclass
+class SchemaMigration(BaseMigration):
+    def upgrade_schema(self):
+        self.upgrade('schema')
+
+    def downgrade_schema(self):
+        self.downgrade('schema')
+
+
+@dataclass  
+class BasePopulateMigration(BaseMigration, ABC):
+    tables = [
+        'pessoa', 'interno_usp', 'funcionario', 'funcionario_atribuicao',
+        'funcionario_restricao', 'educador_fisico', 'instalacao', 'equipamento',
+        'doacao', 'atividade', 'ocorrencia_semanal', 'reserva', 'conduz_atividade',
+        'participacao_atividade', 'evento', 'supervisao_evento', 'grupo_extensao',
+        'atividade_grupo_extensao'
+    ]
+    
+    @property
+    def schema_migration(self):
+        return SchemaMigration(self.dbsession)
 
     def upgrade_populated_db(self):
-        """Executa todos os upgrades na ordem correta"""
-        for migration_name in self.migration_order:
-            self.upgrade(migration_name)
+        self.schema_migration.upgrade_schema()
+        for table in self.tables:
+            self.upgrade(table)
 
     def downgrade_populated_db(self):
-        """Executa todos os downgrades na ordem reversa"""
-        for migration_name in reversed(self.migration_order):
-            self.downgrade(migration_name)
+        for table in reversed(self.tables):
+            self.downgrade(table) 
+        self.schema_migration.downgrade_schema()
+
+
+@dataclass
+class PopulateMockedMinimalDbMigration(BasePopulateMigration):
+    folder: str = 'populate_mocked_minimal_db'

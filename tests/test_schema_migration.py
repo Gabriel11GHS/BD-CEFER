@@ -1,6 +1,6 @@
 # test_schema.py
 import pytest
-from migrations import Migrations
+from migrations import SchemaMigration
 
 TABLES = [
     "PESSOA",
@@ -23,11 +23,9 @@ TABLES = [
     "ATIVIDADE_GRUPO_EXTENSAO",
 ]
 
-def test_schema_migrations(dbsession):
-    migrations = Migrations(dbsession=dbsession)
-    
-    migrations.upgrade('schema')
-
+def test_schema_migration(dbsession):
+    migration = SchemaMigration(dbsession=dbsession)
+    migration.upgrade_schema()
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:
             cursor.execute(
@@ -37,7 +35,7 @@ def test_schema_migrations(dbsession):
             count = cursor.fetchone()[0]
             assert count == 1, f"Table {table} was not created in schema 'tests'"
 
-    migrations.downgrade('schema')
+    migration.downgrade_schema()
 
     with dbsession.connection.cursor() as cursor:
         for table in TABLES:

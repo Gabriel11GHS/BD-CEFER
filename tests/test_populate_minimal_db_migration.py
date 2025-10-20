@@ -1,7 +1,7 @@
 import pytest
 from collections import OrderedDict
+from migrations import PopulateMockedMinimalDbMigration
 
-from migrations import Migrations
 
 def count_table_records(cursor, table_name, schema='tests'):
     cursor.execute(f"SELECT COUNT(*) FROM {schema}.{table_name};")
@@ -32,7 +32,7 @@ def assert_downgrade(cursor, tables):
             f"Tabela {table_name} ainda existe após downgrade"
         )
 
-def test_upgrade_and_downgrade_populate_db(dbsession):
+def test_populate_minimal_db_migration(dbsession):
     EXPECTED_TABLES_RECORDS = OrderedDict([
         ('PESSOA', 20),
         ('INTERNO_USP', 10),
@@ -56,13 +56,13 @@ def test_upgrade_and_downgrade_populate_db(dbsession):
 
     ALL_TABLES = list(EXPECTED_TABLES_RECORDS.keys())
 
-    migrations = Migrations(dbsession=dbsession)
-    migrations.upgrade_populated_db()
+    migration = PopulateMockedMinimalDbMigration(dbsession=dbsession)
+    migration.upgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
         assert_upgrade(cursor, EXPECTED_TABLES_RECORDS)
 
-    migrations.downgrade_populated_db()
+    migration.downgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
         assert_downgrade(cursor, ALL_TABLES)
