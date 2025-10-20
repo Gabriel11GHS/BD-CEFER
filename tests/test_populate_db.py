@@ -1,5 +1,6 @@
-# test_populate_db.py
 import pytest
+from collections import OrderedDict
+
 from migrations import Migrations
 
 def count_table_records(cursor, table_name, schema='tests'):
@@ -19,53 +20,53 @@ def table_exists(cursor, table_name, schema='tests'):
     )
     return cursor.fetchone()[0] > 0
 
-def test_upgrade_and_downgrade_populate_db(dbsession):
-    migrations = Migrations(dbsession=dbsession)
+def verify_expected_tables_records(cursor, EXPECTED_TABLES_RECORDS):
+    """Verifica se as tabelas têm a quantidade esperada de registros"""
+    for table_name, expected_count in EXPECTED_TABLES_RECORDS.items():
+        actual_count = count_table_records(cursor, table_name)
+        assert actual_count == expected_count, (
+            f"Tabela {table_name}: esperado {expected_count}, "
+            f"obtido {actual_count}"
+        )
 
-    # Upgrade completo do banco populado
+def verify_tables_removed(cursor, tables):
+    """Verifica se todas as tabelas foram removidas após downgrade"""
+    for table_name in tables:
+        assert not table_exists(cursor, table_name), (
+            f"Tabela {table_name} ainda existe após downgrade"
+        )
+
+def test_upgrade_and_downgrade_populate_db(dbsession):
+    EXPECTED_TABLES_RECORDS = OrderedDict([
+        ('PESSOA', 20),
+        ('INTERNO_USP', 10),
+        ('FUNCIONARIO', 3),
+        ('FUNCIONARIO_ATRIBUICAO', 6),
+        ('FUNCIONARIO_RESTRICAO', 1),
+        ('EDUCADOR_FISICO', 2),
+        ('INSTALACAO', 8),
+        ('EQUIPAMENTO', 10),
+        ('DOACAO', 3),
+        ('ATIVIDADE', 6),
+        ('OCORRENCIA_SEMANAL', 15),
+        ('RESERVA', 6),
+        ('CONDUZ_ATIVIDADE', 6),
+        ('PARTICIPACAO_ATIVIDADE', 10),
+        ('EVENTO', 4),
+        ('SUPERVISAO_EVENTO', 5),
+        ('GRUPO_EXTENSAO', 4),
+        ('ATIVIDADE_GRUPO_EXTENSAO', 6)
+    ])
+
+    ALL_TABLES = list(EXPECTED_TABLES_RECORDS.keys())
+
+    migrations = Migrations(dbsession=dbsession)
     migrations.upgrade_populated_db()
 
     with dbsession.connection.cursor() as cursor:
-        # Verifica as tabelas de pessoas e internos USP
-        assert count_table_records(cursor, 'PESSOA') == 20
-        assert count_table_records(cursor, 'INTERNO_USP') == 10
-        
-        # Verifica as tabelas de funcionários
-        assert count_table_records(cursor, 'FUNCIONARIO') == 3
-        assert count_table_records(cursor, 'FUNCIONARIO_ATRIBUICAO') == 6
-        assert count_table_records(cursor, 'FUNCIONARIO_RESTRICAO') == 1
-        assert count_table_records(cursor, 'EDUCADOR_FISICO') == 2
-        
-        # Verifica as tabelas de instalações e equipamentos
-        assert count_table_records(cursor, 'INSTALACAO') == 8
-        assert count_table_records(cursor, 'EQUIPAMENTO') == 10
-        assert count_table_records(cursor, 'DOACAO') == 3
-        
-        # Verifica as tabelas de atividades e reservas
-        assert count_table_records(cursor, 'ATIVIDADE') == 6
-        assert count_table_records(cursor, 'OCORRENCIA_SEMANAL') == 15
-        assert count_table_records(cursor, 'RESERVA') == 6
-        assert count_table_records(cursor, 'CONDUZ_ATIVIDADE') == 6
-        assert count_table_records(cursor, 'PARTICIPACAO_ATIVIDADE') == 10
-        assert count_table_records(cursor, 'EVENTO') == 4
-        assert count_table_records(cursor, 'SUPERVISAO_EVENTO') == 5
-        
-        # Verifica as novas tabelas de grupos de extensão
-        assert count_table_records(cursor, 'GRUPO_EXTENSAO') == 4
-        assert count_table_records(cursor, 'ATIVIDADE_GRUPO_EXTENSAO') == 6
+        verify_expected_tables_records(cursor, EXPECTED_TABLES_RECORDS)
 
-    # Downgrade completo
     migrations.downgrade_populated_db()
 
-    # Verifica se todas as tabelas foram removidas
-    tables = [
-        "PESSOA", "INTERNO_USP", "FUNCIONARIO", 
-        "FUNCIONARIO_ATRIBUICAO", "FUNCIONARIO_RESTRICAO", "EDUCADOR_FISICO",
-        "INSTALACAO", "EQUIPAMENTO", "DOACAO",
-        "ATIVIDADE", "OCORRENCIA_SEMANAL", "RESERVA",
-        "CONDUZ_ATIVIDADE", "PARTICIPACAO_ATIVIDADE", "EVENTO", "SUPERVISAO_EVENTO",
-        "GRUPO_EXTENSAO", "ATIVIDADE_GRUPO_EXTENSAO"
-    ]
     with dbsession.connection.cursor() as cursor:
-        for table in tables:
-            assert not table_exists(cursor, table), f"Tabela {table} ainda existe após downgrade"
+        verify_tables_removed(cursor, ALL_TABLES)
