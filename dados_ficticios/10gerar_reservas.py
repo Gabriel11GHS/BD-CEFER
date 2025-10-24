@@ -74,6 +74,3 @@ def gerar_reservas(nome_arquivo_internos, nome_arquivo_instalacoes, nome_arquivo
 
     print(f"Arquivo SQL de reservas gerado: {nome_arquivo_sql_reservas}")
     print(f"Arquivo CSV de reservas gerado: {nome_arquivo_csv_reservas}")
-
-# Exemplo de uso:
-gerar_reservas('pessoas_internas.csv', 'instalacoes.csv', 'upgrade_reserva.sql', 'reservas.csv')

@@ -1,6 +1,6 @@
 import pytest
 from collections import OrderedDict
-from migrations import PopulateMockedMinimalDbMigration
+from src.migrations import PopulateMockedMinimalDbMigration
 
 
 def count_table_records(cursor, table_name, schema='tests'):

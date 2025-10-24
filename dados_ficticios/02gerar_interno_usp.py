@@ -11,7 +11,7 @@ def gerar_categoria():
     return random.choice(categorias)
 
 # Função para dividir os dados em 90% para o arquivo SQL e 10% para o arquivo CSV
-def dividir_dados(nome_arquivo_entrada, nome_arquivo_sql, nome_arquivo_csv_90, nome_arquivo_csv_10):
+def gerar_interno_usp(nome_arquivo_entrada, nome_arquivo_sql, nome_arquivo_csv_90, nome_arquivo_csv_10):
     with open(nome_arquivo_entrada, mode='r', encoding='utf-8') as file:
         reader = csv.reader(file)
         header = next(reader)  # Ignora o cabeçalho

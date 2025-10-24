@@ -1,61 +1,75 @@
-import csv
 import random
+import csv
+from pathlib import Path # Importar Path para lidar com caminhos
 
-# Função para gerar o nome da instalação (exemplo)
-def gerar_nome_instalacao():
-    nomes = [
-        "Ginásio Principal", "Quadra de Vôlei", "Piscina Olímpica", "Sala de Musculação", 
-        "Campo de Futebol", "Sala de Yoga", "Pista de Atletismo", "Campo de Basquete", 
-        "Sala de Dança", "Quadra de Tênis"
-    ]
-    return nomes  # Retorna lista para combinar sem repetição
+# Supondo que NOMES_INSTALACOES_POR_TIPO seja um dicionário definido em algum lugar
+# Exemplo:
+NOMES_INSTALACOES_POR_TIPO = {
+    'Quadra': ['Quadra Poliesportiva A', 'Quadra Poliesportiva B', 'Quadra de Tênis 1', 'Quadra de Tênis 2', 'Quadra de Peteca', 'Quadra de Areia Vôlei', 'Quadra de Areia Beach Tennis'],
+    'Piscina': ['Piscina Olímpica', 'Piscina Recreativa'],
+    'Academia': ['Academia Principal', 'Espaço Multifuncional Musculação'],
+    'Sala': ['Sala de Dança', 'Sala de Ginástica', 'Sala de Alongamento', 'Salão de Eventos'],
+    'Campo': ['Campo de Futebol Principal', 'Campo de Futebol Society'],
+    'Vestiário': ['Vestiário Masculino A', 'Vestiário Feminino A', 'Vestiário Masculino B', 'Vestiário Feminino B']
+}
 
-# Função para gerar o tipo de instalação
-def gerar_tipo_instalacao():
-    tipos = ["Ginásio", "Quadra de Vôlei", "Piscina", "Sala de Musculação", "Campo de Futebol", 
-             "Sala de Yoga", "Pista de Atletismo", "Campo de Basquete", "Sala de Dança", "Quadra de Tênis"]
-    return tipos  # Retorna lista para combinar sem repetição
+def gerar_instalacoes(sql_output_path: Path, csv_output_path: Path, num_registros: int):
+    """
+    Gera dados fictícios para a tabela INSTALACAO e salva em arquivos SQL e CSV.
 
-# Função para gerar a capacidade da instalação
-def gerar_capacidade():
-    return random.randint(10, 200)  # Capacidade entre 10 e 200
+    Args:
+        sql_output_path: Caminho completo (objeto Path) para o arquivo .sql de saída.
+        csv_output_path: Caminho completo (objeto Path) para o arquivo .csv de saída.
+        num_registros: Quantidade de instalações a serem geradas.
+    """
+    print(f"Gerando {num_registros} registros para INSTALACAO...")
+    instalacoes_data_for_csv = [] # Lista para dados do CSV
+    sql_statements = [] # Lista para comandos SQL
 
-# Função para determinar se a instalação é reservável (S ou N)
-def gerar_reservavel():
-    return random.choice(['S', 'N'])
+    instalacoes_unicas = []
+    for tipo, nomes in NOMES_INSTALACOES_POR_TIPO.items():
+        for nome in nomes:
+            instalacoes_unicas.append((nome, tipo))
 
-# Função para gerar instalações únicas
-def gerar_instalacoes():
-    nomes = gerar_nome_instalacao()
-    tipos = gerar_tipo_instalacao()
-    
-    combinacoes_possiveis = [(n, t) for n in nomes for t in tipos]  # Todas as combinações possíveis
-    random.shuffle(combinacoes_possiveis)  # Aleatorizar a ordem
-    
-    # Escolher 30 combinações únicas
-    escolhidas = combinacoes_possiveis[:30]
-    
-    instalacoes = []
-    for idx, (nome, tipo) in enumerate(escolhidas, start=1):  # ID_INSTALACAO a partir de 1
-        capacidade = gerar_capacidade()
-        reservavel = gerar_reservavel()
-        instalacoes.append([idx, nome, tipo, capacidade, reservavel])  # Adiciona ID_INSTALACAO
-    
-    # Gerar o SQL
-    with open('upgrade_instalacao.sql', 'w', encoding='utf-8') as sql_file:
-        for id_inst, nome, tipo, capacidade, reservavel in instalacoes:
-            insert_sql = f"INSERT INTO INSTALACAO (ID_INSTALACAO, NOME, TIPO, CAPACIDADE, EH_RESERVAVEL) VALUES ({id_inst}, '{nome}', '{tipo}', {capacidade}, '{reservavel}');\n"
-            sql_file.write(insert_sql)
+    if num_registros > len(instalacoes_unicas):
+        print(f"  Aviso: Número de instalações ({num_registros}) é maior que o número de nomes únicos disponíveis ({len(instalacoes_unicas)}). Gerando {len(instalacoes_unicas)}.")
+        num_registros = len(instalacoes_unicas)
 
-    # Gerar o CSV
-    with open('instalacoes.csv', 'w', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow(['ID_INSTALACAO', 'NOME', 'TIPO', 'CAPACIDADE', 'EH_RESERVAVEL'])
-        writer.writerows(instalacoes)
+    instalacoes_selecionadas = random.sample(instalacoes_unicas, num_registros)
 
+    # Prepara os dados e comandos SQL
+    for nome, tipo in instalacoes_selecionadas:
+        capacidade = random.randint(10, 200)
+        eh_reservavel = 'Sim' if tipo != 'Vestiário' else 'Nao'
+        
+        # Dados para CSV (sem ID, pois será gerado pelo BD)
+        instalacoes_data_for_csv.append([nome, tipo, capacidade, eh_reservavel])
 
-    print("Arquivo SQL de instalações gerado: upgrade_instalacao.sql")
-    print("Arquivo CSV de instalações gerado: instalacoes.csv")
+        nome_sql = nome.replace("'", "''")
+        tipo_sql = tipo.replace("'", "''")
+        sql = (
+            f"INSERT INTO INSTALACAO (NOME, TIPO, CAPACIDADE, EH_RESERVAVEL) "
+            f"VALUES ('{nome_sql}', '{tipo_sql}', {capacidade}, '{eh_reservavel}');"
+        )
+        sql_statements.append(sql)
 
-# Exemplo de uso:
-gerar_instalacoes()
+    # Escreve o arquivo CSV
+    try:
+        with open(csv_output_path, 'w', newline='', encoding='utf-8') as file_csv:
+            writer = csv.writer(file_csv)
+            # Cabeçalho adaptado para refletir o que está sendo salvo (sem ID)
+            writer.writerow(['NOME', 'TIPO', 'CAPACIDADE', 'EH_RESERVAVEL'])
+            writer.writerows(instalacoes_data_for_csv)
+        print(f"  Arquivo CSV gerado com sucesso em: {csv_output_path}")
+    except Exception as e:
+        print(f"  Erro ao gerar arquivo CSV para INSTALACAO: {e}")
+        return # Interrompe se não conseguir gerar CSV
+
+    # Escreve o arquivo SQL
+    try:
+        with open(sql_output_path, 'w', encoding='utf-8') as file_sql:
+            for statement in sql_statements:
+                file_sql.write(statement + '\n')
+        print(f"  Arquivo SQL gerado com sucesso em: {sql_output_path}")
+    except Exception as e:
+        print(f"  Erro ao gerar arquivo SQL para INSTALACAO: {e}")

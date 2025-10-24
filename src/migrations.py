@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC
-from dbsession import DBSession
+from src.dbsession import DBSession
 from pathlib import Path
 
 @dataclass

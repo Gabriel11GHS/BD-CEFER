@@ -57,7 +57,7 @@ def gerar_data_aquisicao():
     return (start_date + timedelta(days=random_days)).date()
 
 # Função para gerar os 1000 equipamentos
-def gerar_equipamentos(nome_arquivo_csv_instalacao, nome_arquivo_sql_equipamento, nome_arquivo_csv_equipamento):
+def gerar_equipamentos(nome_arquivo_csv_instalacao, nome_arquivo_sql_equipamento, nome_arquivo_csv_equipamento, num_registros):
     # Ler as instalações do arquivo CSV
     with open(nome_arquivo_csv_instalacao, mode='r', encoding='utf-8') as file:
         reader = csv.reader(file)
@@ -67,8 +67,7 @@ def gerar_equipamentos(nome_arquivo_csv_instalacao, nome_arquivo_sql_equipamento
     equipamentos = []
     ids_gerados = set()  # Conjunto para armazenar os IDs de patrimônio já gerados
 
-    # Gerar 1000 equipamentos
-    for _ in range(1000):
+    for _ in range(num_registros):
         id_patrimonio = gerar_id_patrimonio(ids_gerados)  # Gera um ID único
         nome_equipamento = gerar_nome_equipamento()
         id_instalacao_local = int(random.choice(instalacoes)[0])  # Pega o ID_INSTALACAO
@@ -94,5 +93,3 @@ def gerar_equipamentos(nome_arquivo_csv_instalacao, nome_arquivo_sql_equipamento
     print(f"Arquivo SQL de equipamentos gerado: {nome_arquivo_sql_equipamento}")
     print(f"Arquivo CSV de equipamentos gerado: {nome_arquivo_csv_equipamento}")
 
-# Exemplo de uso:
-gerar_equipamentos('instalacoes.csv', 'upgrade_equipamento.sql', 'equipamentos.csv')

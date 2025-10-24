@@ -3,28 +3,7 @@ import random
 
 # Função para gerar uma atribuição aleatória para o contexto de Educação Física, Esportes e Recreação
 def gerar_atribuicao():
-    atribuicoes = [
-        'Professor de Educação Física',
-        'Coordenador de Atividades Esportivas',
-        'Treinador de Atletismo',
-        'Professor de Natação',
-        'Preparador Físico',
-        'Instrutor de Musculação',
-        'Técnico de Futebol',
-        'Técnico de Vôlei',
-        'Assistente de Reabilitação Física',
-        'Supervisor de Recreação',
-        'Nutricionista Esportivo',
-        'Psicólogo Esportivo',
-        'Fisioterapeuta',
-        'Analista de Performance',
-        'Gerente de Eventos Esportivos',
-        'Administrador de Ginásio',
-        'Monitores de Atividades Recreativas',
-        'Gestor de Programas Esportivos',
-        'Professor de Yoga ou Pilates',
-        'Especialista em Medicina Esportiva'
-    ]
+    atribuicoes = ['Secretaria', 'Manutenção', 'Limpeza', 'Instrutor', 'Coordenação', 'Supervisão', 'Gestão']
     return random.choice(atribuicoes)
 
 def gerar_atribuicoes_funcionario(nome_arquivo_csv_funcionario, nome_arquivo_sql_atribuicao, nome_arquivo_csv_atribuicao):
@@ -54,6 +33,3 @@ def gerar_atribuicoes_funcionario(nome_arquivo_csv_funcionario, nome_arquivo_sql
 
     print(f"Arquivo SQL de atribuições gerado: {nome_arquivo_sql_atribuicao}")
     print(f"Arquivo CSV de atribuições gerado: {nome_arquivo_csv_atribuicao}")
-
-# Exemplo de uso:
-gerar_atribuicoes_funcionario('funcionarios.csv', 'upgrade_funcionario_atribuicao.sql', 'funcionario_atribuicao.csv')

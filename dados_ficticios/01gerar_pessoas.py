@@ -23,7 +23,7 @@ def gerar_cpf():
 # Inicializa Faker
 fake = Faker('pt_BR')
 
-def gerar_csv_e_sql(nome_arquivo_csv, nome_arquivo_sql, quantidade):
+def gerar_pessoas(nome_arquivo_csv, nome_arquivo_sql, quantidade):
     cpfs_gerados = set()  # Garante CPFs únicos
     emails_usados = set()  # Garante emails únicos
 
@@ -59,6 +59,3 @@ def gerar_csv_e_sql(nome_arquivo_csv, nome_arquivo_sql, quantidade):
 
     print(f"CSV gerado com sucesso em: {nome_arquivo_csv}")
     print(f"SQL gerado com sucesso em: {nome_arquivo_sql}")
-
-# Gerar os arquivos CSV e SQL com 10.000 pessoas
-gerar_csv_e_sql('pessoas.csv', 'upgrade_pessoa.sql', 10000)

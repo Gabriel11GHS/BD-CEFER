@@ -6,8 +6,8 @@ def gerar_formacao():
     formacoes = ['Bacharelado', 'Mestrado', 'Doutorado', 'Técnico', 'Especialização']
     return random.choice(formacoes)
 
-# Função para separar 20% dos dados dos 90% já processados
-def separar_20_porcento(arquivo_pessoas_internas, inserts_funcionarios, arquivo_funcionarios):
+# Função para gerar funcionarios, 20% dos dados dos 90% já processados
+def gerar_funcionario(arquivo_pessoas_internas, inserts_funcionarios, arquivo_funcionarios):
     with open(arquivo_pessoas_internas, mode='r', encoding='utf-8') as file:
         reader = csv.reader(file)
         header = next(reader)  # Ignora o cabeçalho
@@ -47,6 +47,3 @@ def separar_20_porcento(arquivo_pessoas_internas, inserts_funcionarios, arquivo_
 
     print(f"Arquivo SQL gerado: {inserts_funcionarios}")
     print(f"Arquivo CSV dos 20% gerado: {arquivo_funcionarios}")
-
-# Gerar os arquivos para os 20% dos dados dos 90%
-separar_20_porcento('pessoas_internas.csv', 'upgrade_funcionario.sql', 'funcionarios.csv')
