@@ -1,5 +1,5 @@
-from dbsession import DBSession
-from migrations import PopulateMockedMinimalDbMigration
+from src.dbsession import DBSession
+from src.migrations import PopulateMockedMinimalDbMigration
 
 def populate_db():
     # Criando a sessão do banco

@@ -1,7 +1,7 @@
 import csv
 import random
 
-def gerar_supervisao_evento(
+def gerar_supervisores_evento(
     nome_arquivo_funcionarios,
     nome_arquivo_eventos,
     nome_arquivo_sql,

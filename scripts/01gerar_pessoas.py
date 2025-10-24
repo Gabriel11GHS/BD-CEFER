@@ -1,6 +1,7 @@
 import csv
 from faker import Faker
 import random
+from pathlib import Path
 
 # Função para gerar CPF válido
 def gerar_cpf():
@@ -23,7 +24,11 @@ def gerar_cpf():
 # Inicializa Faker
 fake = Faker('pt_BR')
 
-def gerar_pessoas(nome_arquivo_csv, nome_arquivo_sql, quantidade):
+def gerar_pessoas(sql_dir: Path, csv_dir: Path, quantidade):
+
+    nome_arquivo_csv = csv_dir / 'pessoas.csv'
+    nome_arquivo_sql = sql_dir / 'upgrade_pessoa.sql'
+
     cpfs_gerados = set()  # Garante CPFs únicos
     emails_usados = set()  # Garante emails únicos
 

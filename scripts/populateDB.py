@@ -47,7 +47,7 @@ FORMACOES_FUNCIONARIO = ['Educação Física', 'Administração', 'Fisioterapia'
 ATRIBUICOES_FUNCIONARIO = ['Secretaria', 'Manutenção', 'Limpeza', 'Instrutor', 'Coordenação', 'Supervisão', 'Gestão']
 RESTRICOES_FISICAS = ['Alergia a Cloro', 'Problema na Coluna', 'Lesão no Joelho', 'Asma', 'Hipertensão']
 TIPOS_INSTALACAO = ['Quadra', 'Piscina', 'Academia', 'Sala', 'Campo', 'Vestiário']
-NOMES_INSTALACAO_POR_TIPO = {
+NOMES_INSTALACOES_POR_TIPO = {
     'Quadra': ['Quadra Poliesportiva A', 'Quadra Poliesportiva B', 'Quadra de Tênis 1', 'Quadra de Tênis 2', 'Quadra de Peteca', 'Quadra de Areia Vôlei', 'Quadra de Areia Beach Tennis'],
     'Piscina': ['Piscina Olímpica', 'Piscina Recreativa'],
     'Academia': ['Academia Principal', 'Espaço Multifuncional Musculação'],
@@ -526,7 +526,7 @@ def popular_ocorrencia_semanal(cursor, ids_atividades, ids_instalacoes, num_medi
     instalacoes_por_tipo = {} # Dicionário: {'Piscina': [101, 102], 'Quadra': [103, 104], ...}
     try:
         cursor.execute(f"SELECT ID_INSTALACAO, TIPO FROM {SCHEMA}.INSTALACAO WHERE ID_INSTALACAO = ANY(%s)", (ids_instalacoes,))
-        for row in cursor.fetchall():
+        for row in cursor.fetchall():c
             id_inst, tipo = row[0], row[1]
             if tipo not in instalacoes_por_tipo:
                 instalacoes_por_tipo[tipo] = []

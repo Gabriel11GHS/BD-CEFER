@@ -71,11 +71,3 @@ def gerar_participacao_atividade(nome_arquivo_sql, nome_arquivo_csv,
     print(f"Arquivo SQL gerado: {nome_arquivo_sql}")
     print(f"Arquivo CSV gerado: {nome_arquivo_csv}")
 
-# Exemplo de uso:
-gerar_participacao_atividade(
-    nome_arquivo_sql='upgrade_participacao_atividade.sql',
-    nome_arquivo_csv='participacao_atividade.csv',
-    nome_arquivo_csv_participantes='pessoas_restantes.csv',
-    nome_arquivo_csv_internos='pessoas_internas.csv',
-    nome_arquivo_csv_atividades='atividades.csv'
-)

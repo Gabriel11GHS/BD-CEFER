@@ -1,5 +1,6 @@
 import csv
 import random
+from pathlib import Path
 
 # Função para gerar um NUSP aleatório (exemplo)
 def gerar_nusp():
@@ -11,7 +12,11 @@ def gerar_categoria():
     return random.choice(categorias)
 
 # Função para dividir os dados em 90% para o arquivo SQL e 10% para o arquivo CSV
-def gerar_interno_usp(nome_arquivo_entrada, nome_arquivo_sql, nome_arquivo_csv_90, nome_arquivo_csv_10):
+def gerar_interno_usp(sql_dir: Path, csv_dir: Path, nome_arquivo_entrada: Path):
+    nome_arquivo_sql = sql_dir / 'upgrade_interno_usp.sql'
+    nome_arquivo_csv_90 = csv_dir / 'pessoas_internas.csv'
+    nome_arquivo_csv_10 = csv_dir / 'pessoas_restantes.csv'
+
     with open(nome_arquivo_entrada, mode='r', encoding='utf-8') as file:
         reader = csv.reader(file)
         header = next(reader)  # Ignora o cabeçalho
@@ -55,6 +60,3 @@ def gerar_interno_usp(nome_arquivo_entrada, nome_arquivo_sql, nome_arquivo_csv_9
     print(f"Arquivo SQL gerado: {nome_arquivo_sql}")
     print(f"Arquivo CSV dos 90% gerado: {nome_arquivo_csv_90}")
     print(f"Arquivo CSV dos 10% gerado: {nome_arquivo_csv_10}")
-
-# Gerar os arquivos para os dados
-dividir_dados('pessoas.csv', 'upgrade_interno_usp.sql', 'pessoas_internas.csv', 'pessoas_restantes.csv')
